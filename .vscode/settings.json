@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "stdlib.h": "c"
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/elyasaf/Desktop/TM/task 3/task3",
+            "binaryPath": "/home/elyasaf/Desktop/TM/task 3/task3/StrList",
+            "binaryArgs": []
+        }
+    ]
+}
