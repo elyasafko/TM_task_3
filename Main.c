@@ -23,7 +23,6 @@ int main()
     switch (option) 
     {
         case 0:
-            exit(0);
             break;
         case 1:
             // Code for option 1
@@ -79,7 +78,10 @@ int main()
             break;
         case 11:
             // Code for option 11
-            StrList_free(list);
+            while (StrList_size(list) > 0)
+                StrList_removeAt(list, 0);
+
+            //StrList_free(list);
             break;
         case 12:
             // Code for option 12

@@ -15,7 +15,6 @@ typedef struct _StrList
     size_t _size;
 }StrList;
 
-// need to create dup node
 
 
 Node* Node_alloc(const char *data, Node* next)
@@ -32,6 +31,10 @@ Node* Node_alloc(const char *data, Node* next)
 
 void Node_free(Node* node) 
 {
+    if (node == NULL) 
+    {
+        return;
+    }
     free(node->_data);
 	free(node);
 }
@@ -43,6 +46,10 @@ void Node_free(Node* node)
 StrList* StrList_alloc()
 {
     StrList* p = (StrList*)malloc(sizeof(StrList));
+    if (p == NULL) 
+    {
+        return NULL;
+    }
 	p->_head= NULL;
 	p->_size= 0;
 	return p;
@@ -55,13 +62,16 @@ StrList* StrList_alloc()
  */
 void StrList_free(StrList* StrList)
 {
-    if (StrList==NULL) return;
-	Node* p1= StrList->_head;
+    if (StrList==NULL)
+    {
+        return;
+    }
+	Node* p1 = StrList->_head;
 	Node* p2;
-	while(p1) 
+	while(p1 != NULL) 
 	{
-		p2= p1;
-		p1= p1->_next;
+		p2 = p1;
+		p1 = p1->_next;
 		Node_free(p2);
 	}
 	free(StrList);
@@ -80,8 +90,16 @@ size_t StrList_size(const StrList* StrList)
  */
 void StrList_insertLast(StrList* StrList,const char* data)
 {
+    if (StrList == NULL) 
+    {
+        return;
+    }
 
     Node* p = Node_alloc(data, NULL);
+    if (p == NULL) 
+    {
+        return;
+    }
     if(StrList->_head == NULL) 
     {
         StrList->_head = p;
@@ -89,7 +107,7 @@ void StrList_insertLast(StrList* StrList,const char* data)
     else 
     {
         Node* q = StrList->_head;
-        while(q->_next) 
+        while(q->_next != NULL) 
         {
             q = q->_next;
         }
@@ -108,6 +126,10 @@ void StrList_insertAt(StrList* StrList,const char* data,int index)
         return;
     }
     Node* p= Node_alloc(data, NULL);
+    if (p == NULL) 
+    {
+        return;
+    }
     if(index==0) 
     {
         p->_next = StrList->_head;
@@ -144,8 +166,13 @@ char* StrList_firstData(const StrList* StrList)
  */
 void StrList_print(const StrList* StrList)
 {
+    if (StrList == NULL || StrList->_head == NULL)
+    {
+        return;
+    }
+
     Node* p= StrList->_head;
-    while(p) 
+    while(p != NULL) 
     {
         printf("%s ", p->_data);
         p= p->_next;
@@ -176,7 +203,7 @@ int StrList_printLen(const StrList* Strlist)
 {
     int count= 0;
     Node* p= Strlist->_head;
-    while(p) 
+    while(p != NULL) 
     {
         count+= strlen(p->_data);
         p= p->_next;
@@ -192,7 +219,7 @@ int StrList_count(StrList* StrList, const char* data)
 {
     int count= 0;
     Node* p= StrList->_head;
-    while(p) 
+    while(p != NULL) 
     {
         if(strcmp(p->_data, data)==0) 
             count++;
@@ -200,6 +227,7 @@ int StrList_count(StrList* StrList, const char* data)
     }
     return count;
 }
+
 /*
 	Given a string and a list, remove all the appearences of this string in the list.
 */
@@ -207,7 +235,7 @@ void StrList_remove(StrList* StrList, const char* data)
 {
     Node* p = StrList->_head;
     Node* q = NULL;
-    while(p) 
+    while(p != NULL) 
     {
         if(strcmp(p->_data, data)==0) 
         {
@@ -245,7 +273,7 @@ void StrList_removeAt(StrList* StrList, int index)
     Node* p= StrList->_head;
     if(index==0) 
     {
-        StrList->_head= p->_next;
+        StrList->_head = p->_next;
         Node_free(p);
     }
     else 
@@ -269,20 +297,20 @@ void StrList_removeAt(StrList* StrList, int index)
  */
 int StrList_isEqual(const StrList* StrList1, const StrList* StrList2)
 {
-    if(StrList1->_size!=StrList2->_size) 
+    if(StrList1->_size != StrList2->_size) 
     {
         return 0;
     }
     Node* p= StrList1->_head;
     Node* q= StrList2->_head;
-    while(p) 
+    while(p != NULL && q != NULL) 
     {
         if(strcmp(p->_data, q->_data)!=0) 
         {
             return 0;
         }
-        p= p->_next;
-        q= q->_next;
+        p = p->_next;
+        q = q->_next;
     }
     return 1;
 
@@ -296,7 +324,7 @@ StrList* StrList_clone(const StrList* Strlist)
 {
     StrList* p = StrList_alloc();
     Node* q = Strlist->_head;
-    while(q)
+    while(q != NULL)
     {
         StrList_insertLast(p, q->_data);
         q = q->_next;
@@ -312,7 +340,7 @@ void StrList_reverse( StrList* StrList)
     Node* p= StrList->_head;
     Node* q= NULL;
     Node* r= NULL;
-    while(p) 
+    while(p != NULL) 
     {
         r = q;
         q = p;
@@ -330,13 +358,13 @@ void StrList_sort( StrList* StrList)
     Node* p= StrList->_head;
     Node* q= NULL;
     Node* r= NULL;
-    while(p) 
+    while(p != NULL) 
     {
         q = p;
         r = p->_next;
-        while(r) 
+        while(r != NULL) 
         {
-            if(strcmp(r->_data, q->_data)<0) 
+            if(strcmp(r->_data, q->_data) < 0) 
             {
                 q = r;
             }
@@ -360,7 +388,7 @@ int StrList_isSorted(StrList* StrList)
         return 1;
 
     Node* p = StrList->_head;
-    while(p->_next)
+    while(p->_next != NULL)
     {
         if (strcmp(p->_data, p->_next->_data) > 0) 
             return 0;
